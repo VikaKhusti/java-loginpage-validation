@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -17,11 +18,14 @@ public class PersonalDataActivity extends AppCompatActivity implements DatePicke
     private EditText birthDateEditText;
     private EditText nameEditText;
     private EditText telEditText;
-    private EditText emailDateEditText;
+    private EditText emailEditText;
 
     private TextView nameTextView;
     private TextView telTextView;
     private TextView emailTextView;
+    private TextView dateTextView;
+
+    private Button saveButton;
 
     private String date;
     @Override
@@ -32,11 +36,12 @@ public class PersonalDataActivity extends AppCompatActivity implements DatePicke
         nameEditText = findViewById(R.id.nameEditText);
         telEditText = findViewById(R.id.telNumEditText);
         birthDateEditText = findViewById(R.id.birthDateEditText);
-        emailDateEditText = findViewById(R.id.emailEditText);
+        emailEditText = findViewById(R.id.emailEditText);
 
         nameTextView = findViewById(R.id.nameTextView);
         telTextView = findViewById(R.id.telTextView);
         emailTextView = findViewById(R.id.emailTextView);
+        dateTextView = findViewById(R.id.dateTextView);
 
         birthDateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,14 +50,31 @@ public class PersonalDataActivity extends AppCompatActivity implements DatePicke
             }
         });
 
-        final Button saveButton = findViewById(R.id.saveButton);
+        saveButton = findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (PersonalData.isNameValid(nameEditText.getText().toString())) {
+                if (!PersonalData.isNameValid(nameEditText.getText().toString())) {
                     nameTextView.setText(PersonalData.messageToName);
                 } else {
                     nameTextView.setText("");
+                }
+                if(!PersonalData.isNumberValid(telEditText.getText().toString())){
+                    telTextView.setText(PersonalData.messageToNumber);
+                    Log.d("TAG", "" + telEditText.getText().toString().length());
+                    Log.d("TAG", "" + (telEditText.getText().toString().length() != 9));
+                } else {
+                    telTextView.setText("");
+                }
+                if(birthDateEditText.getText().toString().equals("")){
+                    dateTextView.setText("Вкажіть дату народження");
+                } else {
+                    dateTextView.setText("");
+                }
+                if(!PersonalData.isEmailValid(emailEditText.getText().toString())){
+                    emailTextView.setText(PersonalData.messageToEmail);
+                }else {
+                    emailTextView.setText("");
                 }
             }
         });
