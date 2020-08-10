@@ -19,18 +19,26 @@ import static java.util.regex.Pattern.compile;
 
 public class MainActivity extends AppCompatActivity {
 
+    private TextView loginTextView;
+    private TextView passwordTextView;
+
+    private Button signInButton;
+
+    private EditText loginEditText;
+    private EditText passwordEditText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final TextView loginTextView = findViewById(R.id.loginHintTextView);
-        final TextView passwordTextView = findViewById(R.id.passwordHintTextView);
+        loginTextView = findViewById(R.id.loginHintTextView);
+        passwordTextView = findViewById(R.id.passwordHintTextView);
 
-        final Button signInButton = findViewById(R.id.signInButton);
+        signInButton = findViewById(R.id.signInButton);
 
-        final EditText loginEditText = findViewById(R.id.loginEditText);
-        final EditText passwordEditText = findViewById(R.id.passwordEditText);
+        loginEditText = findViewById(R.id.loginEditText);
+        passwordEditText = findViewById(R.id.passwordEditText);
 
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
