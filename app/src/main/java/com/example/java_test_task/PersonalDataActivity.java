@@ -3,6 +3,8 @@ package com.example.java_test_task;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,8 +17,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.Map;
 
 public class PersonalDataActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
+
+    SharedPreferences settings;
+    public static final String APP_PREFERENCES = "params";
 
     private EditText birthDateEditText;
     private EditText nameEditText;
@@ -33,6 +39,7 @@ public class PersonalDataActivity extends AppCompatActivity implements DatePicke
     private TextView emailTextView;
     private TextView dateTextView;
 
+    private Button editButton;
     private Button saveButton;
 
 
@@ -41,18 +48,26 @@ public class PersonalDataActivity extends AppCompatActivity implements DatePicke
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_data);
 
+        settings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+
         getSupportActionBar().setTitle("Personal Data");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         nameEditText = findViewById(R.id.nameEditText);
         telEditText = findViewById(R.id.telNumEditText);
         birthDateEditText = findViewById(R.id.birthDateEditText);
         emailEditText = findViewById(R.id.emailEditText);
+        getSettings();
 
         nameTextView = findViewById(R.id.nameTextView);
         telTextView = findViewById(R.id.telTextView);
         emailTextView = findViewById(R.id.emailTextView);
         dateTextView = findViewById(R.id.dateTextView);
+
+        editButton = findViewById(R.id.editButton);
+        saveButton = findViewById(R.id.saveButton);
+        saveButton.setEnabled(false);
+
+
 
         nameEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -115,27 +130,62 @@ public class PersonalDataActivity extends AppCompatActivity implements DatePicke
             }
         });
 
-        saveButton = findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(birthDateEditText.getText().toString().isEmpty()){
-                    dateTextView.setText("Вкажіть дату народження");
-                } else {
-                    dateTextView.setText("");
-                }
-                if(PersonalData.isNameValid(_name) && PersonalData.isNumberValid(_tel) &&
-                        !birthDateEditText.getText().toString().isEmpty() && PersonalData.isEmailValid(_email)){
-                    Toast toast=Toast.makeText(getApplicationContext(),"Зміни збережено",Toast.LENGTH_SHORT);
-                    toast.show();
-                }else {
+                try {
+                    if (birthDateEditText.getText().toString().isEmpty()) {
+                        dateTextView.setText("Вкажіть дату народження");
+                    } else {
+                        dateTextView.setText("");
+                    }
+                    if (PersonalData.isNameValid(_name) && PersonalData.isNumberValid(_tel) &&
+                            !birthDateEditText.getText().toString().isEmpty() && PersonalData.isEmailValid(_email)) {
+                        setSettings();
+                        Toast toast = Toast.makeText(getApplicationContext(), "Зміни збережено", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                } catch (Exception e){
+                    refreshFields();
                     Toast toast=Toast.makeText(getApplicationContext(),"Будь ласка, перевітре введені дані",Toast.LENGTH_SHORT);
                     toast.show();
                 }
+
+            }
+        });
+
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshFields();
+                saveButton.setEnabled(true);
             }
         });
 
 
+    }
+
+    private void refreshFields(){
+        nameEditText.setText("");
+        telEditText.setText("");
+        birthDateEditText.setText("");
+        emailEditText.setText("");
+    }
+
+    private void getSettings() {
+        nameEditText.setText(settings.getString("name", ""));
+        telEditText.setText(settings.getString("tel", ""));
+        birthDateEditText.setText(settings.getString("date", ""));
+        emailEditText.setText(settings.getString("email", ""));
+    }
+
+    private void setSettings() {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("name", _name);
+        editor.putString("tel", _tel);
+        editor.putString("date", _date);
+        editor.putString("email", _email);
+        editor.apply();
     }
 
     private void showDataPickerDialog() {
@@ -155,6 +205,8 @@ public class PersonalDataActivity extends AppCompatActivity implements DatePicke
         _date = "" + dayOfMonth + "/" + month + "/" + year;
         birthDateEditText.setText(_date.toString());
     }
+
+
 
 
 }

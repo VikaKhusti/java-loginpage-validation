@@ -2,7 +2,9 @@ package com.example.java_test_task;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -11,6 +13,7 @@ import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private String _login;
     private String _password;
 
+    private int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,15 +93,20 @@ public class MainActivity extends AppCompatActivity {
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Auth.isLoginValid(_login) && Auth.isPasswordValid(_password)){
-                    startPersonalDataActivity();
-                }
-                else {
-                    //ToDo
+                try{
+                    if (Auth.isLoginValid(_login) && Auth.isPasswordValid(_password)){
+                        startPersonalDataActivity();
+                    }
+                } catch (Exception e) {
+                    count++;
+                    if(count == 3){
+                        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                    }
                     Toast toast=Toast.makeText(getApplicationContext(),"Check the entered data",Toast.LENGTH_SHORT);
-                    toast.setMargin(50,50);
                     toast.show();
                 }
+
             }
         });
 
@@ -106,6 +115,4 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, PersonalDataActivity.class);
         startActivity(intent);
     }
-
-
 }
