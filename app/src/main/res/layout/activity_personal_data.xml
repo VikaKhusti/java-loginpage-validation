@@ -9,19 +9,21 @@
     <EditText
         android:id="@+id/nameEditText"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginTop="150dp"
         android:ems="10"
         android:hint="@string/pib"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/shape1"
+        android:padding="10dp"/>
 
     <EditText
         android:id="@+id/telNumEditText"
         android:layout_width="178dp"
-        android:layout_height="45dp"
+        android:layout_height="40dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="95dp"
         android:layout_marginRight="95dp"
@@ -29,12 +31,13 @@
         android:hint="@string/tel_num"
         android:inputType="phone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/nameEditText"
+        />
 
     <EditText
         android:id="@+id/birthDateEditText"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginTop="30dp"
         android:focusable="false"
         android:ems="10"
@@ -42,19 +45,23 @@
         android:inputType="date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/telNumEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/telNumEditText"
+        android:background="@drawable/shape1"
+        android:padding="10dp"/>
 
     <EditText
         android:id="@+id/emailEditText"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginTop="30dp"
         android:ems="10"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/birthDateEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/birthDateEditText"
+        android:background="@drawable/shape1"
+        android:padding="10dp"/>
 
     <TextView
         android:id="@+id/nameTextView"
@@ -89,12 +96,15 @@
     <Button
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginTop="30dp"
         android:text="@string/save"
+        android:textColor="#fff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/emailEditText"
+        android:background="@drawable/shape2"
+        android:padding="10dp"/>
 
     <TextView
         android:id="@+id/maskTextView"

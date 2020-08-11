@@ -33,6 +33,9 @@ public class PersonalDataActivity extends AppCompatActivity implements DatePicke
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_data);
 
+        getSupportActionBar().setTitle("Personal Data");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         nameEditText = findViewById(R.id.nameEditText);
         telEditText = findViewById(R.id.telNumEditText);
         birthDateEditText = findViewById(R.id.birthDateEditText);
