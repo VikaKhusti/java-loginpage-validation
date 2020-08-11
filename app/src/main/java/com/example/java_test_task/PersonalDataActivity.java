@@ -56,6 +56,8 @@ public class PersonalDataActivity extends AppCompatActivity implements DatePicke
         telEditText = findViewById(R.id.telNumEditText);
         birthDateEditText = findViewById(R.id.birthDateEditText);
         emailEditText = findViewById(R.id.emailEditText);
+
+        //here I fill fields with values from shaped preferences
         getSettings();
 
         nameTextView = findViewById(R.id.nameTextView);
@@ -65,6 +67,12 @@ public class PersonalDataActivity extends AppCompatActivity implements DatePicke
 
         editButton = findViewById(R.id.editButton);
         saveButton = findViewById(R.id.saveButton);
+
+        /* This button is enable only while editing
+            So if you want to change values in fields you need first to press "Редагувати"-button
+            and then press "Зберегти"-button
+        */
+
         saveButton.setEnabled(false);
 
 
@@ -141,11 +149,13 @@ public class PersonalDataActivity extends AppCompatActivity implements DatePicke
                     }
                     if (PersonalData.isNameValid(_name) && PersonalData.isNumberValid(_tel) &&
                             !birthDateEditText.getText().toString().isEmpty() && PersonalData.isEmailValid(_email)) {
+                        //if all of the values are valid then they will be saved to shared preferences
                         setSettings();
                         Toast toast = Toast.makeText(getApplicationContext(), "Зміни збережено", Toast.LENGTH_SHORT);
                         toast.show();
                     }
                 } catch (Exception e){
+                    //if some os values are invalid then fields will be zeroed
                     refreshFields();
                     Toast toast=Toast.makeText(getApplicationContext(),"Будь ласка, перевітре введені дані",Toast.LENGTH_SHORT);
                     toast.show();
@@ -157,7 +167,9 @@ public class PersonalDataActivity extends AppCompatActivity implements DatePicke
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //zeroing fields before editing
                 refreshFields();
+                //only when fields will be update - saveButton can be pressed
                 saveButton.setEnabled(true);
             }
         });
@@ -172,6 +184,7 @@ public class PersonalDataActivity extends AppCompatActivity implements DatePicke
         emailEditText.setText("");
     }
 
+    //this method is getting values from shared preferences
     private void getSettings() {
         nameEditText.setText(settings.getString("name", ""));
         telEditText.setText(settings.getString("tel", ""));
@@ -179,6 +192,7 @@ public class PersonalDataActivity extends AppCompatActivity implements DatePicke
         emailEditText.setText(settings.getString("email", ""));
     }
 
+    //this method is setting values to shared preferences
     private void setSettings() {
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("name", _name);

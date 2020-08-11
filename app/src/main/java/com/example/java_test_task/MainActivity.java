@@ -60,8 +60,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(!Auth.isLoginValid(loginEditText.getText().toString())){
+                    // if login is invalid then show error message
                     loginTextView.setText(Auth.messageToLogin);
                 } else {
+                    //if login is valid then hide error message
                     _login = loginEditText.getText().toString();
                     loginTextView.setText("");
                 }
@@ -103,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                     }
-                    Toast toast=Toast.makeText(getApplicationContext(),"Check the entered data",Toast.LENGTH_SHORT);
+                    Toast toast=Toast.makeText(getApplicationContext(),"Перевірьте введені дані",Toast.LENGTH_SHORT);
                     toast.show();
                 }
 

@@ -4,16 +4,17 @@ import java.util.regex.Pattern;
 
 public class Auth {
 
+    //these are messages that user have while input
     public static String messageToLogin = "";
     public static String messageToPassword = "";
 
     public static boolean isLoginValid(String s) {
         if(s.isEmpty()){
-            messageToLogin = "Field cannot be empty";
+            messageToLogin = "Поле не може бути пустим";
             return false;
         } else if(!Pattern.compile( "[a-zA-Z ]" ).matcher(s).find())
         {
-            messageToLogin = "Allowed only Latin alphabet";
+            messageToLogin = "Вводьте лише символи латиницею";
             return false;
         } else return true;
 
@@ -21,17 +22,17 @@ public class Auth {
 
     public static boolean isPasswordValid(String s) {
         if(s.isEmpty()){
-            messageToPassword = "Field cannot be empty";
+            messageToPassword = "Поле не може бути пустим";
             return false;
         } else if(!Pattern.compile( "[a-zA-Z]" ).matcher(s).find())
         {
-            messageToPassword = "Allowed only Latin alphabet without spaces";
+            messageToPassword = "Вводьте лише символи латиницею без пробілів";
             return false;
         } else if(!Pattern.compile( "[0-9]" ).matcher(s).find()){
-            messageToPassword = "At least 1 digit";
+            messageToPassword = "Щонайменше 1 цифра";
             return false;
         } else if(!Pattern.compile( "(?=.*[A-Z])" ).matcher(s).find()){
-            messageToPassword = "At least 1 uppercase letter";
+            messageToPassword = "Щонайменше 1 велика буква";
             return false;
         } else return true;
     }
