@@ -4,12 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -20,6 +23,11 @@ public class PersonalDataActivity extends AppCompatActivity implements DatePicke
     private EditText telEditText;
     private EditText emailEditText;
 
+    private String _name;
+    private String _tel;
+    private String _email;
+    private String _date;
+
     private TextView nameTextView;
     private TextView telTextView;
     private TextView emailTextView;
@@ -27,7 +35,7 @@ public class PersonalDataActivity extends AppCompatActivity implements DatePicke
 
     private Button saveButton;
 
-    private String date;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +54,60 @@ public class PersonalDataActivity extends AppCompatActivity implements DatePicke
         emailTextView = findViewById(R.id.emailTextView);
         dateTextView = findViewById(R.id.dateTextView);
 
+        nameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!PersonalData.isNameValid(nameEditText.getText().toString())) {
+                    nameTextView.setText(PersonalData.messageToName);
+                } else {
+                    nameTextView.setText("");
+                    _name = nameEditText.getText().toString();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        telEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(!PersonalData.isNumberValid(telEditText.getText().toString())){
+                    telTextView.setText(PersonalData.messageToNumber);
+                } else {
+                    _tel = telEditText.getText().toString();
+                    telTextView.setText("");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        emailEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(!PersonalData.isEmailValid(emailEditText.getText().toString())){
+                    emailTextView.setText(PersonalData.messageToEmail);
+                }else {
+                    _email = emailEditText.getText().toString();
+                    emailTextView.setText("");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
         birthDateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,33 +119,25 @@ public class PersonalDataActivity extends AppCompatActivity implements DatePicke
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!PersonalData.isNameValid(nameEditText.getText().toString())) {
-                    nameTextView.setText(PersonalData.messageToName);
-                } else {
-                    nameTextView.setText("");
-                }
-                if(!PersonalData.isNumberValid(telEditText.getText().toString())){
-                    telTextView.setText(PersonalData.messageToNumber);
-                    Log.d("TAG", "" + telEditText.getText().toString().length());
-                    Log.d("TAG", "" + (telEditText.getText().toString().length() != 9));
-                } else {
-                    telTextView.setText("");
-                }
-                if(birthDateEditText.getText().toString().equals("")){
+                if(birthDateEditText.getText().toString().isEmpty()){
                     dateTextView.setText("Вкажіть дату народження");
                 } else {
                     dateTextView.setText("");
                 }
-                if(!PersonalData.isEmailValid(emailEditText.getText().toString())){
-                    emailTextView.setText(PersonalData.messageToEmail);
+                if(PersonalData.isNameValid(_name) && PersonalData.isNumberValid(_tel) &&
+                        !birthDateEditText.getText().toString().isEmpty() && PersonalData.isEmailValid(_email)){
+                    Toast toast=Toast.makeText(getApplicationContext(),"Зміни збережено",Toast.LENGTH_SHORT);
+                    toast.show();
                 }else {
-                    emailTextView.setText("");
+                    Toast toast=Toast.makeText(getApplicationContext(),"Будь ласка, перевітре введені дані",Toast.LENGTH_SHORT);
+                    toast.show();
                 }
             }
         });
 
 
     }
+
     private void showDataPickerDialog() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
@@ -98,9 +152,11 @@ public class PersonalDataActivity extends AppCompatActivity implements DatePicke
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         month++;
-        date = "" + dayOfMonth + "/" + month + "/" + year;
-        birthDateEditText.setText(date.toString());
+        _date = "" + dayOfMonth + "/" + month + "/" + year;
+        birthDateEditText.setText(_date.toString());
     }
+
+
 }
 
 
