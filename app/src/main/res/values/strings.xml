@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">java-test-task</string>
+    <string name="sign_in">Sign in</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="pib">ПІБ</string>
+    <string name="tel_num">Номер телефону</string>
+    <string name="birth_date">Дата народження</string>
+    <string name="email">E-mail</string>
+    <string name="save">Зберегти</string>
+    <string name="edit">Редагувати</string>
+    <string name="back">Назад</string>
+    <string name="mask">+380</string>
 </resources>
