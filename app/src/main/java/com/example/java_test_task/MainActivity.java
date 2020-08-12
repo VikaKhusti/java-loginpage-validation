@@ -25,6 +25,9 @@ import static java.util.regex.Pattern.compile;
 
 public class MainActivity extends AppCompatActivity {
 
+    SharedPreferences settings;
+    public static final String APP_PREFERENCES = "isBlock";
+
     private TextView loginTextView;
     private TextView passwordTextView;
 
@@ -44,6 +47,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         getSupportActionBar().setTitle("Sign in");
+
+        settings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+
+        if(settings.getBoolean("isBlock", false)){
+           blockActivity();
+        }
+
 
         loginTextView = findViewById(R.id.loginHintTextView);
         passwordTextView = findViewById(R.id.passwordHintTextView);
@@ -102,8 +112,8 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     count++;
                     if(count == 3){
-                        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                       setValue(true);
+                       blockActivity();
                     }
                     Toast toast=Toast.makeText(getApplicationContext(),"Перевірьте введені дані",Toast.LENGTH_SHORT);
                     toast.show();
@@ -113,8 +123,24 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-    public void startPersonalDataActivity(){
+
+    private void setValue(boolean b){
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean("isBlock", b);
+        editor.apply();
+    }
+
+    private void startPersonalDataActivity(){
         Intent intent = new Intent(this, PersonalDataActivity.class);
         startActivity(intent);
+    }
+
+    private void blockActivity() {
+        Toast toast=Toast.makeText(getApplicationContext(),
+                "Ви ввели неправильні дані більше 3-ох разів, тому ваш додаток буде заблоковано",
+                Toast.LENGTH_SHORT);
+        toast.show();
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 }
